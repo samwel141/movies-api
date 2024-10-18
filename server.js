@@ -17,6 +17,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'] 
+  }));
+
+  app.options('*', cors());
+
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,14 +37,19 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-        const writeUsersToFile = (users) => {
-        const filePath = path.join(__dirname, 'users.json');
-        fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
-        };
+  
 
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+const writeUsersToFile = (users) => {
+    const filePath = path.join(__dirname, 'users.json');
+    fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+    };
 const SECRET_KEY = process.env.SECRET_KEY; 
 const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY; 
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
@@ -76,6 +90,10 @@ passport.deserializeUser((id, done) => {
     const users = readUsersFromFile();
     const user = users.find(user => user.id === id);
     done(null, user);
+});
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the Movies Application! Explore and enjoy your favorite movies.');
 });
 
 app.get('/auth/google',
@@ -516,6 +534,3 @@ const readUsersFromFile = () => {
     });
 
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
