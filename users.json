@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "username": "Samwel",
+    "password": "$2a$10$4o4z5Q..R.Pubg6YXR9n9.YdSH7EVq3TKn.pCsI/pvgw1btF2m46y",
+    "email": "samwelwilson141@gmail.com",
+    "watch_list": [
+      933260,
+      1184918,
+      533535,
+      110296
+    ],
+    "favorites": [
+      1087822,
+      533535
+    ],
+    "genres": [
+      28,
+      12,
+      35,
+      16,
+      80,
+      37
+    ],
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJTYW13ZWwiLCJpYXQiOjE3MjkyNTExOTksImV4cCI6MTcyOTg1NTk5OX0.VLdEEm-pYJQEB2tNkzkb3DpIBqymYimU1R1TcPc_HgA"
+  }
+]

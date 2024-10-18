@@ -1,0 +1,27 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "server.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/server.js"
+      }
+    ],
+    "env": {
+      "PORT": "4000",
+      "SECRET_KEY": "secret_key",
+      "TMDB_API_KEY": "0473ddfa4f94ee3962ec107595f0abd4",
+      "TMDB_TOKEN": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDczZGRmYTRmOTRlZTM5NjJlYzEwNzU5NWYwYWJkNCIsIm5iZiI6MTcyOTA4MTUyMS45NDMxMjMsInN1YiI6IjY3MGU1ZWE5OWYzNTMxZTZiMjZjNmM5MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.o1TJ4R0fIarPImi5Y8d0rQN514Pj-dLeXH_CpJJVRpY",
+      "REFRESH_SECRET_KEY": "secret_key_ref",
+      "SESSION_SECRET": "session_secret",
+      "REDIRECT_URI": "http://localhost:3000/auth/google/callback",
+      "GOOGLE_CLIENT_ID": "103789780416-nddd8ds0dvcijm93isl9l5t5gglpmebj.apps.googleusercontent.com",
+      "GOOGLE_CLIENT_SECRET": "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"
+    }
+  }
+  
