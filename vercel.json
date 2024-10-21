@@ -19,8 +19,9 @@
     "TMDB_TOKEN": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDczZGRmYTRmOTRlZTM5NjJlYzEwNzU5NWYwYWJkNCIsIm5iZiI6MTcyOTA4MTUyMS45NDMxMjMsInN1YiI6IjY3MGU1ZWE5OWYzNTMxZTZiMjZjNmM5MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.o1TJ4R0fIarPImi5Y8d0rQN514Pj-dLeXH_CpJJVRpY",
     "REFRESH_SECRET_KEY": "secret_key_ref",
     "SESSION_SECRET": "session_secret",
-    "REDIRECT_URI": "https://movies-app-tau-teal.vercel.app/auth/google/callback/auth/google/callback",
+    "REDIRECT_URI": "https://movies-app-tau-teal.vercel.app/auth/google/callback",
     "GOOGLE_CLIENT_ID": "103789780416-nddd8ds0dvcijm93isl9l5t5gglpmebj.apps.googleusercontent.com",
-    "GOOGLE_CLIENT_SECRET": "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"
+    "GOOGLE_CLIENT_SECRET": "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",
+    "MONGODB_URI":"mongodb+srv://samwelwilson141:KcYA7eikGywFFA1s@cluster0.qv7b9.mongodb.net/moviesdb?retryWrites=true&w=majority"
   }
 }
