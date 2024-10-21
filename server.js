@@ -1015,27 +1015,53 @@ app.post('/login', async (req, res) => {
 
 
 
-app.get('/profile', async (req, res) => {
-    const token = req.headers.authorization.split(" ")[1];
+// app.get('/profile', async (req, res) => {
+//     const token = req.headers.authorization.split(" ")[1];
 
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
+//     if (!token) {
+//         return res.status(401).json({ message: 'Unauthorized' });
+//     }
+
+//     try {
+//         const decoded = jwt.verify(token, SECRET_KEY);
+//         console.log(decoded);
+//         const user = await User.findById(decoded._id);
+
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         res.json({ message: 'User profile', user });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(401).json({ message: 'Invalid token' });
+//     }
+// });
+
+app.post('/refresh-token', async (req, res) => {
+    const { refreshToken } = req.body;
+  
+    if (!refreshToken) {
+      return res.status(400).json({ message: 'No refresh token provided' });
     }
-
+  
     try {
-        const decoded = jwt.verify(token, SECRET_KEY);
-        const user = await User.findById(decoded._id);
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.json({ message: 'User profile', user });
+      const decoded = jwt.verify(refreshToken, REFRESH_SECRET_KEY);
+      
+      const user = await User.findById(decoded.id);
+      if (!user || user.refreshToken !== refreshToken) {
+        return res.status(403).json({ message: 'Invalid refresh token' });
+      }
+  
+      const newToken = jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+  
+      res.json({ token: newToken, user });
     } catch (error) {
-        console.error(error);
-        res.status(401).json({ message: 'Invalid token' });
+      console.error('Error refreshing token:', error);
+      res.status(403).json({ message: 'Invalid refresh token' });
     }
-});
+  });
+  
 
 
 
@@ -1071,4 +1097,33 @@ app.put('/user/:id', async (req, res) => {
     }
 });
 
+app.get('/profile', async (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY);
+
+        const user = await User.findById(decoded.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json({ message: 'User profile', user });
+    } catch (error) {
+        console.error(error);
+
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ message: 'Token expired' });
+        } else if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ message: 'Invalid token' });
+        } else {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+});
 
