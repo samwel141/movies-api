@@ -678,7 +678,7 @@ app.post('/auth/google/callback', async (req, res) => {
 async function getTrailerForMovie(movieId) {
     try {
         const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`, {
-            timeout: 100000 
+            timeout: 20000 
         });
         const videos = response.data.results;
         const trailer = videos.find(video => video.type === 'Trailer' && video.site === 'YouTube');
@@ -713,7 +713,7 @@ app.get('/movies', async (req, res) => {
         }
 
         const response = await axios.get(url, {
-            timeout: 100000 
+            timeout: 20000 
         });
         const movies = response.data.results;
         const totalPages = response.data.total_pages;
@@ -737,7 +737,7 @@ app.get('/genres', async (req, res) => {
     try {
         const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=0473ddfa4f94ee3962ec107595f0abd4&language=en-US`;
         const response = await axios.get(url, {
-            timeout: 100000 
+            timeout: 20000 
         });
         const genres = response.data.genres;
 
@@ -754,7 +754,7 @@ app.get('/movies/:id', async (req, res) => {
     try {
         const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en-US`;
         const response = await axios.get(url, {
-            timeout: 100000 
+            timeout: 20000 
         });
         const movie = response.data;
 
