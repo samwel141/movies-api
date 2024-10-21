@@ -583,11 +583,15 @@ app.use(passport.session());
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
     useUnifiedTopology: true,
 })
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.error('MongoDB connection error:', err));
+
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
 const SECRET_KEY = process.env.SECRET_KEY;
 const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY;
@@ -724,7 +728,7 @@ app.get('/movies', async (req, res) => {
         res.json({ movies: moviesWithTrailers, totalPages });
     } catch (error) {
         console.error('Error fetching movies:', error);
-        res.status(500).json({ message: 'Error fetching movies' });
+        res.status(500).json({ message: 'Error fetching movies', error });
     }
 });
 
@@ -843,10 +847,9 @@ app.post('/user/:id/genres', async (req, res) => {
         return res.status(404).json({ message: 'User not found' });
       }
   
-      // Check if the genre is already in the user's genres
       if (!user.genres.includes(genreId)) {
-        user.genres.push(genreId);  // Add the genre if it doesn't exist
-        await user.save();  // Save the updated user document
+        user.genres.push(genreId);  
+        await user.save();
       }
   
       res.json({ message: 'Genre added to watched genres', genres: user.genres });
@@ -875,9 +878,8 @@ app.delete('/user/:id/watchlist', async (req, res) => {
         return res.status(400).json({ message: 'Movie not in watchlist' });
       }
   
-      // Remove the movie from watchlist
       user.watch_list.splice(movieIndex, 1);
-      await user.save(); // Save changes to the user document
+      await user.save(); 
   
       res.json({ message: 'Movie removed from watchlist', watch_list: user.watch_list });
     } catch (err) {
@@ -903,9 +905,8 @@ app.delete('/user/:id/watchlist', async (req, res) => {
         return res.status(400).json({ message: 'Movie not in favorites' });
       }
   
-      // Remove the movie from favorites
       user.favorites.splice(movieIndex, 1);
-      await user.save(); // Save changes to the user document
+      await user.save();
   
       res.json({ message: 'Movie removed from favorites', favorites: user.favorites });
     } catch (err) {
@@ -930,9 +931,8 @@ app.delete('/user/:id/watchlist', async (req, res) => {
         return res.status(400).json({ message: 'Genre not in user genres' });
       }
   
-      // Remove the genre from user genres
       user.genres.splice(genreIndex, 1);
-      await user.save(); // Save changes to the user document
+      await user.save(); 
   
       res.json({ message: 'Genre removed from user genres', genres: user.genres });
     } catch (err) {
@@ -1003,7 +1003,6 @@ app.post('/login', async (req, res) => {
         const token = jwt.sign({ id: user._id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
         const refreshToken = jwt.sign({ id: user._id, username: user.username }, REFRESH_SECRET_KEY, { expiresIn: '7d' });
 
-        // Store the refresh token in the database
         user.refreshToken = refreshToken;
         await user.save();
 
@@ -1072,6 +1071,4 @@ app.put('/user/:id', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+
